@@ -27,26 +27,31 @@ class BiquadEQ:
 
     def filter2SOS(self):
         sos = np.zeros((len(self.fc),6))
-        for i in range(len(self.fc)):
-            if self.filterType[i] == "lowpass":
-                sos[i] = self.lowpass(self.fs,self.fc[i],self.gain[i],self.Q[i])
-            elif self.filterType[i] == "highpass":
-                sos[i] = self.highpass(self.fs,self.fc[i],self.gain[i],self.Q[i])
-            elif self.filterType[i] == "bandpass":
-                sos[i] = self.bandpass(self.fs,self.fc[i],self.gain[i],self.Q[i])
-            elif self.filterType[i] == "bandstop":
-                sos[i] = self.bandstop(self.fs,self.fc[i],self.gain[i],self.Q[i])
-            elif self.filterType[i] == "lowshelf":
-                sos[i] = self.lowshelf(self.fs,self.fc[i],self.gain[i],self.Q[i])
-            elif self.filterType[i] == "highshelf":
-                sos[i] = self.highshelf(self.fs,self.fc[i],self.gain[i],self.Q[i])
-            elif self.filterType[i] == "peak":
-                sos[i] = self.peak(self.fs,self.fc[i],self.gain[i],self.Q[i])
-            elif self.filterType[i] == "allpass":
-                sos[i] = self.allpass(self.fs,self.fc[i],self.gain[i],self.Q[i])
-            else:
-                sos[i] = np.array([1, 0, 0, 1, 0, 0])
-                warnings.warn("Some filter types seem unclear.")
+        if len(self.fc) == len(self.gain) and len(self.gain) == len(self.Q) and len(self.Q) == len(self.filterType):
+            for i in range(len(self.fc)):
+                if self.filterType[i] == "lowpass":
+                    sos[i] = self.lowpass(self.fs,self.fc[i],self.gain[i],self.Q[i])
+                elif self.filterType[i] == "highpass":
+                    sos[i] = self.highpass(self.fs,self.fc[i],self.gain[i],self.Q[i])
+                elif self.filterType[i] == "bandpass":
+                    sos[i] = self.bandpass(self.fs,self.fc[i],self.gain[i],self.Q[i])
+                elif self.filterType[i] == "bandstop":
+                    sos[i] = self.bandstop(self.fs,self.fc[i],self.gain[i],self.Q[i])
+                elif self.filterType[i] == "lowshelf":
+                    sos[i] = self.lowshelf(self.fs,self.fc[i],self.gain[i],self.Q[i])
+                elif self.filterType[i] == "highshelf":
+                    sos[i] = self.highshelf(self.fs,self.fc[i],self.gain[i],self.Q[i])
+                elif self.filterType[i] == "peak":
+                    sos[i] = self.peak(self.fs,self.fc[i],self.gain[i],self.Q[i])
+                elif self.filterType[i] == "allpass":
+                    sos[i] = self.allpass(self.fs,self.fc[i],self.gain[i],self.Q[i])
+                else:
+                    sos[i] = np.array([1, 0, 0, 1, 0, 0])
+                    warnings.warn("Some filter types seem unclear.")
+        else:
+            sos[:,0] = 1
+            sos[:,3] = 1
+            warnings.warn("Please check the length of the filter coefficents are same.")
         return sos
 
 
