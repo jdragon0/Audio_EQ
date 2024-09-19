@@ -2,7 +2,7 @@
 Easily visualize data with Bode plots using fir (impulse response) or iir (sos format) filter
 
 # Test.py 
-```
+```python
 fs = 48000
 fc = np.array([100,200,400,800])
 gain = np.array([-10,10,10,10])
